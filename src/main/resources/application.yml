@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: sign
+  config:
+    activate:
+      on-profile: default
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sign
+    username: root
+    password: root1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  jwt:
+    token:
+      access-expiration-time: 43200000    # 12시간
+      refresh-expiration-time: 604800000   # 7일
