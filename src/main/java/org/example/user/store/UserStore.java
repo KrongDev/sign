@@ -18,14 +18,21 @@ public class UserStore {
         this.userRepository = userRepository;
     }
 
-    public void createUser(User user, String pw) {
+    public void createUser(User user) {
         //
-        this.userRepository.save(new UserJpo(user, pw));
+        this.userRepository.save(new UserJpo(user));
     }
 
     public User loadUser(String id, String pw) {
         //
         Optional<UserJpo> jpo = this.userRepository.findByIdAndPw(id, pw);
+        if(jpo.isEmpty()) throw new NoSuchElementException();
+        return jpo.get().toDomain();
+    }
+
+    public User loadUser(String id) {
+        //
+        Optional<UserJpo> jpo = this.userRepository.findById(id);
         if(jpo.isEmpty()) throw new NoSuchElementException();
         return jpo.get().toDomain();
     }

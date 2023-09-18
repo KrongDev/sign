@@ -30,11 +30,11 @@ public class UserJpo {
     @Column(columnDefinition = "DATE")
     private Date time;
 
-    public UserJpo(User user, String pw) {
+    public UserJpo(User user) {
         //
         this.id = user.getId();
         this.email = user.getEmail();
-        this.pw = pw;
+        this.pw = user.getPw();
         this.name = user.getName();
         this.age = user.getAge();
         this.time = user.getTime();
@@ -45,6 +45,7 @@ public class UserJpo {
         return new User(
                 this.id,
                 this.email,
+                this.pw,
                 this.name,
                 this.age,
                 this.time
