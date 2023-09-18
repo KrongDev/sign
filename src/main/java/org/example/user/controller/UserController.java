@@ -1,6 +1,6 @@
 package org.example.user.controller;
 
-import org.example.user.aggregate.User;
+import org.example.config.JwtToken;
 import org.example.user.command.CreateUser;
 import org.example.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping
-    public User loadUser(@RequestParam String id, @RequestParam String pw) {
+    public JwtToken loadUser(@RequestParam String id, @RequestParam String pw) {
         //
         return this.userService.loadUser(id, pw);
     }

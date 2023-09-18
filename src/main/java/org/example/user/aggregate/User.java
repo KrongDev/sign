@@ -15,6 +15,7 @@ public class User {
     //
     private String id;
     private String email;
+    private String pw;
     private String name;
     private int age;
     private Date time;
@@ -31,5 +32,6 @@ public class User {
         this.email = command.getEmail();
         this.name = command.getName();
         this.age = command.getAge();
+        this.pw = command.getPw();
     }
 }
