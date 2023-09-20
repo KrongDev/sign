@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String key) {
 
 
-        User userInfo = userStore.loadUser(key);
+        User userInfo = userStore.loadUserByUserId(key);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
@@ -34,6 +34,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .security
                 .core
                 .userdetails
-                .User(userInfo.getId(), userInfo.getPw(), grantedAuthorities);
+                .User(userInfo.getUserId(), userInfo.getUserPw(), grantedAuthorities);
     }
 }

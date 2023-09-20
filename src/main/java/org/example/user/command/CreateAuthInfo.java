@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUser {
-    private transient String userCode;
-    private transient String connectId;
-    private String userName;
+public class CreateAuthInfo {
+    private String deviceId;
+    private String connectId;
+    private String refreshToken;
+    private long expireToken;
 }

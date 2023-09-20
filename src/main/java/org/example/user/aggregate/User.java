@@ -13,25 +13,28 @@ import java.sql.Date;
 @AllArgsConstructor
 public class User {
     //
-    private String id;
+    private String userCode;
+    private String connectId;
+
+    private String userId;
+    private String userPw;
+
     private String email;
-    private String pw;
     private String name;
-    private int age;
-    private Date time;
+    private Date createAt;
+    private Date updateAt;
 
     public User() {
         //
-        this.time = new Date(System.currentTimeMillis());
+        this.createAt = new Date(System.currentTimeMillis());
+        this.updateAt = new Date(System.currentTimeMillis());
     }
 
     public User(CreateUser command) {
         //
         this();
-        this.id = command.getId();
-        this.email = command.getEmail();
-        this.name = command.getName();
-        this.age = command.getAge();
-        this.pw = command.getPw();
+        this.userCode = command.getUserCode();
+        this.connectId = command.getConnectId();
+        this.name = command.getUserName();
     }
 }

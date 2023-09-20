@@ -23,17 +23,32 @@ public class UserStore {
         this.userRepository.save(new UserJpo(user));
     }
 
-    public User loadUser(String id, String pw) {
+    public User loadUserByUserId(String userId) {
         //
-        Optional<UserJpo> jpo = this.userRepository.findByIdAndPw(id, pw);
+        Optional<UserJpo> jpo = this.userRepository.findByUserId(userId);
         if(jpo.isEmpty()) throw new NoSuchElementException();
         return jpo.get().toDomain();
     }
 
-    public User loadUser(String id) {
+    public User loadUserBuConnectId(String connectId) {
         //
-        Optional<UserJpo> jpo = this.userRepository.findById(id);
+        Optional<UserJpo> jpo = this.userRepository.findByConnectId(connectId);
         if(jpo.isEmpty()) throw new NoSuchElementException();
         return jpo.get().toDomain();
+    }
+
+    public boolean hasConnectId(String connectId) {
+        //
+        return this.userRepository.existsByConnectId(connectId);
+    }
+
+    public boolean hasUserId(String userId) {
+        //
+        return this.userRepository.existsByUserId(userId);
+    }
+
+    public void updateUser(User user) {
+        //
+        this.userRepository.save(new UserJpo(user));
     }
 }

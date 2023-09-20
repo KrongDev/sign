@@ -1,4 +1,4 @@
-package org.example.user.command;
+package org.example.user.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUser {
-    private transient String userCode;
-    private transient String connectId;
-    private String userName;
+public class HasDeviceInfo {
+    //
+    private String deviceId;
+    private String connectId;
 }
