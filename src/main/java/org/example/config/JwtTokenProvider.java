@@ -3,6 +3,9 @@ package org.example.config;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
+import org.example.user.aggregate.UserInfo;
+import org.example.user.command.CreateAuthInfo;
+import org.example.user.service.AuthInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,13 +30,20 @@ public class JwtTokenProvider {
     @Value("${spring.jwt.token.refresh-expiration-time}")
     private long refreshExpiredTime;
 
-    public JwtToken generateToken(Authentication authentication, String deviceId, org.example.user.aggregate.User user) {
+    private final AuthInfoService authInfoService;
+
+    public JwtTokenProvider(AuthInfoService authInfoService) {
+        //
+        this.authInfoService = authInfoService;
+    }
+
+    public JwtToken generateToken(Authentication authentication, String deviceId, String connectId, UserInfo user) {
 //        String authorities = authentication.getAuthorities().stream()
 //                .map(GrantedAuthority::getAuthority)
 //                .collect(Collectors.joining(","));
 
         String accessToken = createAccessToken(authentication, user);
-        String refreshToken = createRefreshToken(authentication, user, deviceId);
+        String refreshToken = createRefreshToken(authentication, user, deviceId, connectId);
 
         return JwtToken.builder()
                 .grantType("Bearer")
@@ -45,7 +55,7 @@ public class JwtTokenProvider {
     /**
      * accessToken 토큰 생성
      */
-    public String createAccessToken(Authentication authentication, org.example.user.aggregate.User user) {
+    public String createAccessToken(Authentication authentication, UserInfo user) {
         Claims claims = Jwts.claims().setSubject(authentication.getName());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + accessExpiredTime);
@@ -62,7 +72,7 @@ public class JwtTokenProvider {
     /**
      * Refresh 토큰 생성
      */
-    public String createRefreshToken(Authentication authentication, org.example.user.aggregate.User user, String deviceId) {
+    public String createRefreshToken(Authentication authentication, UserInfo user, String deviceId, String connectId) {
         Claims claims = Jwts.claims().setSubject(authentication.getName());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + refreshExpiredTime);
@@ -76,7 +86,7 @@ public class JwtTokenProvider {
                 .compact();
 
         // database에 저장
-//        authInfoService.createAuthInfo(new CreateAuthInfo(deviceId, refreshToken, expireDate.getTime()));
+        authInfoService.createAuthInfo(new CreateAuthInfo(deviceId, connectId, refreshToken, expireDate.getTime())) ;
         return refreshToken;
     }
 

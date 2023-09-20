@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.shared.DomainEntity;
 import org.example.user.aggregate.User;
 
 import javax.persistence.Column;
@@ -18,37 +19,46 @@ import java.sql.Date;
 @NoArgsConstructor
 @Entity
 @Table(name="tb_user")
-public class UserJpo {
+public class UserJpo implements DomainEntity<User> {
     //시스템 아이디
     @Id
-    private String id;
+    private String userCode;
+    private String connectId;
+
+    private String userId;
+    private String userPw;
 
     private String email;
-    private String pw;
     private String name;
-    private int age;
     @Column(columnDefinition = "DATE")
-    private Date time;
+    private Date createAt;
+    @Column(columnDefinition = "DATE")
+    private Date updateAt;
 
     public UserJpo(User user) {
         //
-        this.id = user.getId();
+        this.userCode = user.getUserCode();
+        this.connectId = user.getConnectId();
+        this.userId = user.getUserId();
+        this.userPw = user.getUserPw();
         this.email = user.getEmail();
-        this.pw = user.getPw();
         this.name = user.getName();
-        this.age = user.getAge();
-        this.time = user.getTime();
+        this.createAt = user.getCreateAt();
+        this.updateAt = user.getUpdateAt();
     }
 
+    @Override
     public User toDomain() {
         //
         return new User(
-                this.id,
+                this.userCode,
+                this.connectId,
+                this.userId,
+                this.userPw,
                 this.email,
-                this.pw,
                 this.name,
-                this.age,
-                this.time
+                this.createAt,
+                this.updateAt
         );
     }
 
